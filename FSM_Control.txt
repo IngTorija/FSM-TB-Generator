@@ -1,0 +1,31 @@
+name = FSM_Control
+clock = clk
+reset = rst
+reset state = S0
+
+states = (S0,S1,S2,S3,S4)
+inputs = (opcode[6])
+outputs = (ALUSrcA,ALUSrcB[2],IorD,PCSrc,IRWrite,RegWrite,PCWrite)
+final states = (S0,S1,S2)
+
+transiciones = 
+	PS>NS  I
+	S0>S1(-)
+	
+	S1>S2(opcode=6'b100011)
+	S1>S1(-)
+	
+	S2>S3(opcode=6'b100011)
+	S2>S2(-)
+	
+	S3>S4(-)
+
+	S4>S0(-)
+
+s_output
+
+	S0>(PCWrite = 1'b1, IorD = 1'b0, IRWrite = 1'b1, RegWrite = 1'b0, ALUSrcA = 1'b0, ALUSrcB = 2'b01, PCSrc = 1'b0)(-)
+	S1>(PCWrite = 1'b0, IorD = 1'b0, IRWrite = 1'b0, RegWrite = 1'b0, ALUSrcA = 1'b0, ALUSrcB = 2'b01, PCSrc = 1'b1)(-)
+	S2>(PCWrite = 1'b0, IorD = 1'b0, IRWrite = 1'b0, RegWrite = 1'b0, ALUSrcA = 1'b1, ALUSrcB = 2'b10, PCSrc = 1'b1)(-)
+	S3>(PCWrite = 1'b0, IorD = 1'b1, IRWrite = 1'b0, RegWrite = 1'b0, ALUSrcA = 1'b0, ALUSrcB = 2'b10, PCSrc = 1'b1)(-)
+    S4>(PCWrite = 1'b0, IorD = 1'b0, IRWrite = 1'b0, RegWrite = 1'b1, ALUSrcA = 1'b0, ALUSrcB = 2'b10, PCSrc = 1'b1)(-)
